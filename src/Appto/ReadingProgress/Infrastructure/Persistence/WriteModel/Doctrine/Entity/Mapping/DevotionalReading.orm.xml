@@ -1,0 +1,18 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="Appto\ReadingProgress\Domain\DevotionalReading" table="dev_devotional_reading" >
+        <embedded name="devotionalId" class="Appto\ReadingProgress\Domain\DevotionalId" use-column-prefix="false"/>
+        <embedded name="readDate" class="Appto\Common\Domain\DateTime\DateTime" use-column-prefix="true"/>
+        <embedded name="lastOpenedDate" class="Appto\Common\Domain\DateTime\DateTime" use-column-prefix="true"/>
+        <id name="entityId" type="integer" >
+            <generator strategy="AUTO"/>
+        </id>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="postLoad" method="doctrinePostLoad"/>
+        </lifecycle-callbacks>
+
+    </entity>
+</doctrine-mapping>

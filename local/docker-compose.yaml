@@ -1,0 +1,62 @@
+version: '3.6'
+
+services:
+    nginx:
+        container_name: reading-progress-nginx
+        image: nginx:1.15-alpine
+        restart: unless-stopped
+        expose:
+            - '80'
+        ports:
+            - "8040:80"
+        networks:
+            - devom
+        volumes:
+            - ../:/app:delegated
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+        depends_on:
+            - php
+
+    php:
+        container_name: reading-progress-php
+        image: php-fpm-reading-progress
+        build:
+            context: ../
+            dockerfile: local/Dockerfile
+        restart: unless-stopped
+        expose:
+            - '9000'
+        ports:
+            - "9040:9001"
+        networks:
+            - devom
+        volumes:
+            - ../:/app:delegated
+        env_file:
+            - ../.env
+        depends_on:
+            - pgsql
+
+    pgsql:
+        container_name: reading-progress-pgsql
+        image: postgres
+        restart: unless-stopped
+        ports:
+            - 5442:5432
+        networks:
+            - devom
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+            PGDATA: /var/lib/postgresql/data/pgdata
+        volumes:
+            - ../var/data/postgres/pgdata:/var/lib/postgresql/data/pgdata
+
+volumes:
+    db-data:
+        driver: local
+
+networks:
+    devom:
+        name: devom_net

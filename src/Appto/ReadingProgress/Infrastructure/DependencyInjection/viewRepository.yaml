@@ -1,0 +1,13 @@
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  Appto\ReadingProgress\Infrastructure\Persistence\ReadModel\Doctrine\:
+    resource: '%kernel.project_dir%/src/Appto/ReadingProgress/Infrastructure/Persistence/ReadModel/Doctrine/**/*.php'
+    autoconfigure: true
+
+  Appto\ReadingProgress\View\ReadingProgressViewAssembler: '@Appto\ReadingProgress\Infrastructure\Persistence\ReadModel\Doctrine\DoctrineReadingProgressViewAssembler'
+  Appto\ReadingProgress\View\DevotionalReadingViewAssembler: '@Appto\ReadingProgress\Infrastructure\Persistence\ReadModel\Doctrine\DoctrineDevotionalReadingViewAssembler'
+  Appto\ReadingProgress\View\ReadingProgressViewRepository: '@Appto\ReadingProgress\Infrastructure\Persistence\ReadModel\Doctrine\DoctrineReadingProgressViewRepository'

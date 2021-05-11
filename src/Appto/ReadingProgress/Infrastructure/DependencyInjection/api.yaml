@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+  #        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  Appto\ReadingProgress\Infrastructure\UI\Rest\:
+    resource: '%kernel.project_dir%/src/Appto/ReadingProgress/Infrastructure/UI/Rest/*Controller.php'
+    tags: [ controller.service_arguments ]

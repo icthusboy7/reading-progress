@@ -1,0 +1,33 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Appto\ReadingProgress\Domain\ReadingProgress" table="dev_reading_progress" >
+        <embedded name="id" class="Appto\ReadingProgress\Domain\ReadingProgressId" use-column-prefix="false"/>
+        <embedded name="planId" class="Appto\ReadingProgress\Domain\PlanId" use-column-prefix="false"/>
+        <embedded name="lastOpenedDate" class="Appto\Common\Domain\DateTime\DateTime" use-column-prefix="true"/>
+        <embedded name="startDate" class="Appto\Common\Domain\DateTime\DateTime" use-column-prefix="true"/>
+        <embedded name="endDate" class="Appto\Common\Domain\DateTime\DateTime" use-column-prefix="true"/>
+        <embedded name="readerId" class="Appto\ReadingProgress\Domain\ReaderId" use-column-prefix="false"/>
+        <many-to-many field="devotionalReadings" target-entity="Appto\ReadingProgress\Domain\DevotionalReading" fetch="EAGER" orphan-removal="true">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+            <join-table name="dev_reading_progress_devotional_reading">
+                <join-columns>
+                    <join-column name="reading_progress_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="devotional_reading_id" referenced-column-name="entity_id" on-delete="CASCADE"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="postLoad" method="doctrinePostLoad"/>
+        </lifecycle-callbacks>
+
+    </entity>
+</doctrine-mapping>

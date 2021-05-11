@@ -1,0 +1,13 @@
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  #DoctrineRepository
+  Appto\ReadingProgress\Infrastructure\Persistence\WriteModel\Doctrine\:
+    resource: '%kernel.project_dir%/src/Appto/ReadingProgress/Infrastructure/Persistence/WriteModel/Doctrine/**/{Entity,*Repository.php}'
+    autoconfigure: true
+
+  #ReadingProgress
+  Appto\ReadingProgress\Domain\ReadingProgressRepository: '@Appto\ReadingProgress\Infrastructure\Persistence\WriteModel\Doctrine\DoctrineReadingProgressRepository'

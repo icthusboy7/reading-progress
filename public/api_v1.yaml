@@ -1,0 +1,364 @@
+---
+openapi: 3.0.0
+info:
+  title: Appto ReadingProgress
+  description: |-
+    This is a READING-PROGRESS server.  You can find out more about reading-progress at
+            [http://appto.eu/reading-progress](http://appto.eu/reading-progress)
+  contact:
+    name: ReadingProgress Team
+    email: reading-progress@appto.eu
+  version: 1.0.0
+servers:
+  - url: "{server}/api/v1"
+    description: Appto Reading-progress API Mocking
+    variables:
+      server:
+        enum:
+          - https://proservant-staging.herokuapp.com
+          - http://localhost:8040
+        default: http://localhost:8040
+paths:
+  "/reading-progress/{id}/finish":
+    put:
+      tags:
+        - Reading Progress
+      summary: Finish Plan
+      description: Finish Plan
+      operationId: FinishPlan
+      parameters:
+        - name: id
+          in: path
+          description: ID of reading progress
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                finishDate:
+                  description: DateTime UTC timezone and ISO8601 format
+                  type: string
+              type: object
+              example:
+                finishDate: '2021-03-20T04:53:46+00:00'
+      responses:
+        '204':
+          description: Successfully finished
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+  "/reading-progress/{id}":
+    get:
+      tags:
+        - Reading Progress
+      summary: Get Reading Progress
+      description: Get Reading Progress
+      operationId: GetReadingProgress
+      parameters:
+        - name: id
+          in: path
+          description: ID of reading progress to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ReadingProgressView"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not found
+    put:
+      tags:
+        - Reading Progress
+      summary: Open Plan
+      description: Open Plan
+      operationId: OpenPlan
+      parameters:
+        - name: id
+          in: path
+          description: ID of Reading Progress
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+      requestBody:
+        description: OpenPlan object
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OpenPlanRequest"
+      responses:
+        '204':
+          description: Successfully created
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+  "/reading-progress":
+    get:
+      tags:
+        - Reading Progress
+      summary: List Reading Progress
+      description: List Reading Progress
+      operationId: ListReadingProgress
+      parameters:
+        - name: planId
+          in: query
+          description: Plan ID to Find
+          schema:
+            type: string
+            format: uuid
+            example: "f24afe4a-50f7-4710-8eee-5370e5f8fc3"
+        - name: readerId
+          in: query
+          description: Reader ID to Find
+          schema:
+            type: string
+            format: uuid
+            example: "f50fca8d-2a55-4a3f-8fd2-2e07dcce33f6"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ReadingProgressView"
+        '400':
+          description: Bad Request
+  "/reading-progress/{id}/devotionals/{devotionalId}/open":
+    put:
+      tags:
+        - Reading Progress
+      summary: open Devotional
+      description: open Devotional
+      operationId: openDevotional
+      parameters:
+        - name: id
+          in: path
+          description: ID of Reading Progress
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+        - name: devotionalId
+          in: path
+          description: ID of Devotional
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "a17102c1-b979-492f-a74e-ea3d218e36e6"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                openDate:
+                  description: DateTime UTC timezone and ISO8601 format
+                  type: string
+              type: object
+              example:
+                openDate: '2021-03-11T04:53:46+00:00'
+      responses:
+        '204':
+          description: Successfully Open Devotional
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+  "/reading-progress/{id}/devotionals/{devotionalId}/read":
+    put:
+      tags:
+        - Reading Progress
+      summary: read Devotional
+      description: read Devotional
+      operationId: readDevotional
+      parameters:
+        - name: id
+          in: path
+          description: ID of Reading Progress
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+        - name: devotionalId
+          in: path
+          description: ID of Devotional
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "a17102c1-b979-492f-a74e-ea3d218e36e6"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                openDate:
+                  description: DateTime UTC timezone and ISO8601 format
+                  type: string
+              type: object
+              example:
+                openDate: '2021-03-11T04:53:46+00:00'
+      responses:
+        '204':
+          description: Successfully Read Devotional
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+  "/reading-progress/{id}/start":
+    put:
+      tags:
+        - Reading Progress
+      summary: Start Plan
+      description: Start Plan
+      operationId: StartPlan
+      parameters:
+        - name: id
+          in: path
+          description: ID of reading progress
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                startDate:
+                  description: DateTime UTC timezone and ISO8601 format
+                  type: string
+              type: object
+              example:
+                startDate: '2021-03-11T04:53:46+00:00'
+      responses:
+        '204':
+          description: Successfully started
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+components:
+  schemas:
+    OpenPlanRequest:
+      title: OpenPlan model
+      description: Open Plan model
+      required:
+        - id
+        - planId
+        - readerId
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+        planId:
+          type: string
+          format: uuid
+          example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+        readerId:
+          type: string
+          format: uuid
+          example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+        openDate:
+          description: DateTime UTC timezone and ISO8601 format
+          type: string
+          format: date-time
+      type: object
+    DevotionalReadingView:
+      title: DevotionalReadings model
+      description: Devotional Readings model
+      required:
+        - devotionalId
+        - lastOpenedDate
+      properties:
+        devotionalId:
+          type: string
+          format: uuid
+          example: "a17102c1-b979-492f-a74e-ea3d218e36e6"
+        lastOpenedDate:
+          description: DateTime UTC timezone and ISO8601 format
+          type: string
+          format: date-time
+        readDate:
+          description: DateTime UTC timezone and ISO8601 format
+          type: string
+          format: date-time
+          nullable: true
+      type: object
+    ReadingProgressView:
+      title: ReadingProgress model
+      description: ReadingProgress model
+      required:
+        - planId
+        - readerId
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "e2ac1cbb-2004-4cab-a3eb-e208f0c6baab"
+        planId:
+          type: string
+          format: uuid
+          example: "f24afe4a-50f7-4710-8eee-5370e5f8fc3"
+        readerId:
+          type: string
+          format: uuid
+          example: "f50fca8d-2a55-4a3f-8fd2-2e07dcce33f6"
+        lastOpenedDate:
+          description: DateTime UTC timezone and ISO8601 format
+          type: string
+          format: date-time
+        startDate:
+          description: DateTime UTC timezone and ISO8601 format
+          type: string
+          format: date-time
+          nullable: true
+        endDate:
+          description: DateTime UTC timezone and ISO8601 format
+          type: string
+          format: date-time
+          nullable: true
+        devotionalReadings:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DevotionalReadingView"
+      type: object
+tags:
+  - name: Reading Progress
+    description: Everything about Reading Progress
+externalDocs:
+  description: Find out more about Reading-progress
+  url: http://appto.eu/reading-progress

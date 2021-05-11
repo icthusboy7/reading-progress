@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  Appto\ReadingProgress\Application\Command\:
+    resource: '%kernel.project_dir%/src/Appto/ReadingProgress/Application/Command/**/*'
+    exclude: '%kernel.project_dir%/src/Appto/ReadingProgress/Application/Command/**/*Request.php'
+
+  Appto\ReadingProgress\Application\Query\:
+    resource: '%kernel.project_dir%/src/Appto/ReadingProgress/Application/Query/**/*'
+    exclude: '%kernel.project_dir%/src/Appto/ReadingProgress/Application/Query/**/*Request.php'

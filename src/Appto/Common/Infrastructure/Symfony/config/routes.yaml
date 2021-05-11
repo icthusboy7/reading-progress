@@ -1,0 +1,9 @@
+api:
+  resource: '../../../../../../src/Appto/**/Infrastructure/UI/Rest/*Controller.php'
+  type: annotation
+  #    host: '%router.request_context.host%'
+  prefix: api/v1/
+  options:
+    i18n: false
+  defaults:
+    _format: 'json'
